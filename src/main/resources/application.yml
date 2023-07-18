@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    password: flamingo
+    url: jdbc:mysql://xx.xxx.xx.xx:3306/dbName
+    username: root
+
+server:
+  servlet:
+    context-path: /demo
+  port: 7050
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.flamingo.demo.controller
+
+zoo:
+  gpt:
+    client:
+      open-key:
+      proxy:
+      proxy-port:
+      model-version:
+
