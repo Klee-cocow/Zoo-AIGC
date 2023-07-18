@@ -1,8 +1,8 @@
-package com.Animal.product.exception;
+package com.animal.product.exception;
 
-import com.Animal.product.common.BaseResponse;
-import com.Animal.product.common.ErrorCode;
-import com.Animal.product.common.ResultUtils;
+import com.animal.product.common.BaseResponse;
+import com.animal.product.common.ErrorCode;
+import com.animal.product.common.ResultUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

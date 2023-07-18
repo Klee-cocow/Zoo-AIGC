@@ -1,4 +1,4 @@
-package com.Animal.product.common;
+package com.animal.product.common;
 
 /**
  * @author 咏鹅

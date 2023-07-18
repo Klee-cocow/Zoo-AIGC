@@ -1,6 +1,6 @@
-package com.Animal.product.exception;
+package com.animal.product.exception;
 
-import com.Animal.product.common.ErrorCode;
+import com.animal.product.common.ErrorCode;
 
 /**
  * @author 咏鹅

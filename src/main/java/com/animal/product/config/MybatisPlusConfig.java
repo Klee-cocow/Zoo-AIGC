@@ -1,4 +1,4 @@
-package com.Animal.product.config;
+package com.animal.product.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;

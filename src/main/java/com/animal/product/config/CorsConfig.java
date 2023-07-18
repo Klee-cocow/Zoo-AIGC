@@ -1,4 +1,4 @@
-package com.Animal.product.config;
+package com.animal.product.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

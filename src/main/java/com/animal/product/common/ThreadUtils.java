@@ -1,6 +1,6 @@
-package com.Animal.product.common;
+package com.animal.product.common;
 
-import com.Animal.product.exception.BusinessException;
+import com.animal.product.exception.BusinessException;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
