@@ -1,9 +1,9 @@
 package com.animal.product.constant;
 
 /**
- * @author 咏鹅
+ * @author 咏鹅、AllianceTing
  * @version 1.0
- * @description TODO
+ * @description 用户常数
  * @date 2023/7/19 18:11
  */
 public interface UserConstant {

@@ -9,7 +9,7 @@ import com.animal.product.service.strategyimpl.PhoneStrategyImpl;
 import java.util.HashMap;
 
 /**
- * @author 咏鹅
+ * @author 咏鹅、AllianceTing
  * @version 1.0
  * @description TODO
  * @date 2023/7/19 22:51

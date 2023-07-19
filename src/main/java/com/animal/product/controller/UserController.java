@@ -23,9 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author 咏鹅
+ * @author 咏鹅、AllianceTing
  * @version 1.0
- * @description TODO
+ * @description 用户方法
  * @date 2023/7/19 18:01
  */
 @RestController

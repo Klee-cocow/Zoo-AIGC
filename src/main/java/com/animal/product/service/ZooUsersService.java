@@ -1,14 +1,13 @@
 package com.animal.product.service;
 
-import com.animal.product.common.BaseResponse;
+import com.animal.product.model.domain.ZooUsers;
 import com.animal.product.model.dto.UserDTO;
 import com.animal.product.model.request.UserRegisterRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.animal.product.model.domain.ZooUsers;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * @author 咏鹅
+ * @author 咏鹅、AllianceTing
  * @description 针对表【zoo_users】的数据库操作Service
  * @createDate 2023-07-19 17:58:01
  */

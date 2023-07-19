@@ -5,7 +5,7 @@ import com.animal.product.model.dto.UserDTO;
 import com.animal.product.model.request.UserRegisterRequest;
 
 /**
- * @author 咏鹅
+ * @author 咏鹅、AllianceTing
  * @version 1.0
  * @description TODO
  * @date 2023/7/19 22:52

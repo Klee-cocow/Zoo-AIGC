@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * @author 咏鹅
+ * @author 咏鹅、AllianceTing
  * @description 针对表【zoo_users】的数据库操作Service实现
  * @createDate 2023-07-19 17:58:01
  */
