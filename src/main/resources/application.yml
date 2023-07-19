@@ -1,19 +1,23 @@
 spring:
   datasource:
     password: flamingo
-    url: jdbc:mysql://xx.xxx.xx.xx:3306/dbName
+    url: jdbc:mysql://
     username: root
+  mail:  # qq邮件发送
+    host: smtp.qq.com
+    password: xxxxxxxxxx
+    username: 1952789737@qq.com
+    port: 465
+
 
 server:
   servlet:
-    context-path: /demo
+    context-path: /api
   port: 7050
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
-
 
 
 springdoc:
@@ -26,13 +30,11 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match: '/**'
-      packages-to-scan: com.flamingo.demo.controller
+      packages-to-scan: com.animal.product.controller
 
-zoo:
-  gpt:
-    client:
-      open-key:
-      proxy:
-      proxy-port:
-      model-version:
+
+email:
+  email-from: 1952789737@qq.com
+  subject: ${spring.mail.username}
+
 

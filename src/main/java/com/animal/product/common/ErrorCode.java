@@ -14,7 +14,9 @@ public enum ErrorCode {
     SYSTEM_ERROR(5000,"系统错误","请联系管理员"),
     NO_AUTH(1234,"没有权限",""),
     NO_QUERY(3255,"没有找到",""),
-    PARAMETER_ERROR(999,"参数错误","");
+    PARAMETER_ERROR(999,"参数错误",""),
+    OVER_FLOW(777,"栈溢出",""),
+    OUT_OF_BOUNDS(12306,"数组越界","");
 
     private int code;
 
