@@ -26,13 +26,13 @@ public class UserStrategyContent {
 
     public static UserStrategyInterface doUserLogin(IdentityEnum loginIdentity){
         if(loginIdentity == null) throw new BusinessException(ErrorCode.PARAMETER_ERROR,"未传输登录识别码");
-        if(!emailOrPhoneStrategies.containsKey(loginIdentity)) throw new BusinessException(ErrorCode.PARAMETER_ERROR,"此登陆识别码不存在");
+        if(!emailOrPhoneStrategies.containsKey(loginIdentity)) throw new BusinessException(ErrorCode.PARAMETER_ERROR,"此登录识别码不存在");
         return emailOrPhoneStrategies.get(loginIdentity);
     }
 
     public static UserStrategyInterface doUserRegister(IdentityEnum registerIdentity){
-        if(registerIdentity == null) throw new BusinessException(ErrorCode.PARAMETER_ERROR,"未传输登录识别码");
-        if(!emailOrPhoneStrategies.containsKey(registerIdentity)) throw new BusinessException(ErrorCode.PARAMETER_ERROR,"此登陆识别码不存在");
+        if(registerIdentity == null) throw new BusinessException(ErrorCode.PARAMETER_ERROR,"未传输注册识别码");
+        if(!emailOrPhoneStrategies.containsKey(registerIdentity)) throw new BusinessException(ErrorCode.PARAMETER_ERROR,"此注册识别码不存在");
         return emailOrPhoneStrategies.get(registerIdentity);
     }
 
