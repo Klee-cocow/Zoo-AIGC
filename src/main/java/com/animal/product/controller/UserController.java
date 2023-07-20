@@ -1,26 +1,16 @@
 package com.animal.product.controller;
 
-import cn.hutool.core.util.RandomUtil;
 import com.animal.product.common.BaseResponse;
 import com.animal.product.common.ErrorCode;
 import com.animal.product.common.ResultUtils;
-import com.animal.product.constant.IdentityEnum;
-import com.animal.product.constant.UserConstant;
 import com.animal.product.exception.BusinessException;
-import com.animal.product.model.domain.ZooUsers;
 import com.animal.product.model.dto.UserDTO;
 import com.animal.product.model.request.UserLoginRequest;
 import com.animal.product.model.request.UserRegisterRequest;
 import com.animal.product.service.ZooUsersService;
-import com.animal.product.strategy.UserStrategyContent;
 import jakarta.annotation.Resource;
-import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 咏鹅、AllianceTing
@@ -29,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2023/7/19 18:01
  */
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Resource

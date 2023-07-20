@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -25,6 +26,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 
@@ -55,13 +57,21 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
     @Override
     public Integer userRegister(UserRegisterRequest userRegisterRequest, String registerIdentity, HttpServletRequest request) {
 
+        //查找用户是否已经注册
+        String res = redisTemplate.opsForValue().get(userRegisterRequest.getEmail());
+        if(res != null){
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR, "当前账户已存在");
+        }
         QueryWrapper<ZooUsers> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("email", userRegisterRequest.getEmail());
         long count = zooUsersMapper.selectCount(queryWrapper);
         if (count > 0) {
+            int userOut = RandomUtil.randomInt(1,9);
+            redisTemplate.opsForValue().set(userRegisterRequest.getEmail(),"1",userOut,TimeUnit.MINUTES);
             throw new BusinessException(ErrorCode.PARAMETER_ERROR, "当前账户已存在");
         }
 
+        //判断验证码
         String invite_code = userRegisterRequest.getInvite_code();
         String code = redisTemplate.opsForValue().get(UserConstant.USER_LOGIN_STATE + userRegisterRequest.getEmail());
         if(code ==null){
@@ -74,8 +84,6 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
 
         //统一处理 邮箱注册和手机号注册的情况
         ZooUsers user = UserStrategyContent.doUserRegister(IdentityEnum.valueOf(registerIdentity)).doEmailOrPhone(userRegisterRequest, registerIdentity);
-
-
 
         //获取用户ip
         String ipAddr = CommonToolUtils.getIpAddr(request);
@@ -143,6 +151,19 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         String judgeCode = redisTemplate.opsForValue().get(UserConstant.USER_LOGIN_STATE + email);
         if (!(judgeCode == null)) {
             return judgeCode;
+        }
+        //查找用户是否已经注册
+        String res = redisTemplate.opsForValue().get(email);
+        if(res != null){
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR, "当前账户已存在");
+        }
+        QueryWrapper<ZooUsers> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("email", email);
+        long count = zooUsersMapper.selectCount(queryWrapper);
+        if (count > 0) {
+            int userOut = RandomUtil.randomInt(1,9);
+            redisTemplate.opsForValue().set(email,"1",userOut,TimeUnit.MINUTES);
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR, "当前账户已存在");
         }
         String code = RandomUtil.randomNumbers(4);
         String text = "你正在我们的网站进行注册操作，如果不是您所操作的请无视掉这条消息，验证码是: " + code + "请在5分钟内输入";
