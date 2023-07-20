@@ -20,7 +20,6 @@ src/mian/resources/application.yml
 *.ipr
 *.log
 *.zip
-application.yml
 
 ### NetBeans ###
 /nbproject/private/
