@@ -2,9 +2,7 @@ package com.animal.product.common;
 
 import com.animal.product.constant.IdentityEnum;
 import com.animal.product.exception.BusinessException;
-import com.animal.product.model.domain.ZooUsers;
 import com.animal.product.model.dto.UserDTO;
-import com.animal.product.model.request.UserRegisterRequest;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Pattern;
@@ -17,7 +15,7 @@ import java.util.regex.Pattern;
  */
 public class ValidatorCommon {
 
-    public static void userInfoIsValid(UserRegisterRequest user, String type) {
+    public static void userInfoIsValid(UserDTO user, String type) {
 
 
 

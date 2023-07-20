@@ -1,8 +1,8 @@
 package com.animal.product.service.strategyimpl;
 
+import com.animal.product.common.ValidatorCommon;
 import com.animal.product.model.domain.ZooUsers;
 import com.animal.product.model.dto.UserDTO;
-import com.animal.product.model.request.UserRegisterRequest;
 import com.animal.product.strategy.UserStrategyInterface;
 
 /**
@@ -13,8 +13,20 @@ import com.animal.product.strategy.UserStrategyInterface;
  */
 public class PhoneStrategyImpl implements UserStrategyInterface {
     @Override
-    public ZooUsers doEmailOrPhone(UserRegisterRequest users, String type) {
+    public ZooUsers doEmailOrPhone(UserDTO userDTO, String type) {
+        ValidatorCommon.userInfoIsValid(userDTO,type);
+        ZooUsers user = new ZooUsers();
 
-        return null;
+        if(!(userDTO.getPhone() !=null)){
+            String phone = userDTO.getPhone();
+            user.setPhone(phone);
+        }
+
+        if(!(userDTO.getPhone_code() !=null)){
+            String phone_code = userDTO.getPhone_code();
+            user.setPhone_code(phone_code);
+        }
+
+        return user;
     }
 }

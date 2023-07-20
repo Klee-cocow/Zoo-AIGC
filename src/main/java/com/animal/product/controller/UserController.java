@@ -7,6 +7,7 @@ import com.animal.product.exception.BusinessException;
 import com.animal.product.model.dto.UserDTO;
 import com.animal.product.model.request.UserLoginRequest;
 import com.animal.product.model.request.UserRegisterRequest;
+import com.animal.product.model.vo.UserVO;
 import com.animal.product.service.ZooUsersService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,36 +28,43 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public BaseResponse<Integer> userRegister(@RequestBody UserRegisterRequest userRegisterRequest, String registerIdentity, HttpServletRequest request){
-        if(userRegisterRequest == null) {
+    public BaseResponse<Integer> userRegister(@RequestBody UserRegisterRequest userRegisterRequest, String registerIdentity, HttpServletRequest request) {
+        if (userRegisterRequest == null) {
             throw new BusinessException(ErrorCode.PARAMETER_ERROR);
         }
-
-        Integer result = userService.userRegister(userRegisterRequest,registerIdentity,request);
+        Integer result = userService.userRegister(userRegisterRequest, registerIdentity, request);
 
         return ResultUtils.success(result);
     }
 
 
     @PostMapping("/login")
-    public BaseResponse<UserDTO> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request){
-        if(userLoginRequest == null) {
+    public BaseResponse<UserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, String loginIdentity, HttpServletRequest request) {
+        if (userLoginRequest == null) {
             throw new BusinessException(ErrorCode.PARAMETER_ERROR);
         }
-
-        String userEmail = userLoginRequest.getEmail();
-        String password = userLoginRequest.getPassword();
-
-        UserDTO user = userService.userLogin(userEmail, password,request);
+        UserVO user = userService.userLogin(userLoginRequest, loginIdentity, request);
 
 
         return ResultUtils.success(user);
     }
 
-    @PostMapping ("/sendcode")
-    public void sendCode(@RequestParam String email){
+    @PostMapping("/sendcode")
+    public void sendCode(@RequestParam String email) {
         userService.generateCodeToEmail(email);
     }
+
+
+    @GetMapping("/getLoginUser")
+    public BaseResponse<UserVO> getLoginUser(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+
+        UserVO loginUser = userService.getLoginUser(request);
+        //验证token有效性
+        return ResultUtils.success(loginUser);
+    }
+
+
 
 
 }

@@ -12,5 +12,5 @@ import com.animal.product.model.request.UserRegisterRequest;
  */
 public interface UserStrategyInterface {
 
-    ZooUsers doEmailOrPhone(UserRegisterRequest users, String type);
+    ZooUsers doEmailOrPhone(UserDTO users, String type);
 }

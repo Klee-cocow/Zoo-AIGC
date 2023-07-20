@@ -1,22 +1,11 @@
 package com.animal.product.service.strategyimpl;
 
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.RandomUtil;
-import com.animal.product.common.CommonToolUtils;
-import com.animal.product.common.ErrorCode;
 import com.animal.product.common.ValidatorCommon;
-import com.animal.product.constant.IdentityEnum;
 import com.animal.product.constant.UserConstant;
-import com.animal.product.exception.BusinessException;
 import com.animal.product.model.domain.ZooUsers;
 import com.animal.product.model.dto.UserDTO;
-import com.animal.product.model.request.UserRegisterRequest;
 import com.animal.product.strategy.UserStrategyInterface;
-import jakarta.mail.MessagingException;
 import org.springframework.util.DigestUtils;
-
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 咏鹅、AllianceTing
@@ -26,19 +15,25 @@ import java.util.concurrent.TimeUnit;
  */
 public class EmailStrategyImpl implements UserStrategyInterface {
     @Override
-    public ZooUsers doEmailOrPhone(UserRegisterRequest userRequest, String type) {
-        ValidatorCommon.userInfoIsValid(userRequest,type);
+    public ZooUsers doEmailOrPhone(UserDTO userDTO, String type) {
+        ValidatorCommon.userInfoIsValid(userDTO,type);
         ZooUsers user = new ZooUsers();
 
-        String entryPassword = DigestUtils.md5DigestAsHex((UserConstant.SALT + userRequest.getPassword()).getBytes());
-        String email = userRequest.getEmail();
-        String invite_code = userRequest.getInvite_code();
+        if(!userDTO.getPassword().isEmpty()) {
+            String entryPassword = DigestUtils.md5DigestAsHex((UserConstant.SALT + userDTO.getPassword()).getBytes());
+            user.setPassword(entryPassword);
+        }
 
-        user.setDescription(UserConstant.USER_DESCRIPTION);  //默认设置
+        if(!userDTO.getEmail().isEmpty()){
+            String email = userDTO.getEmail();
+            user.setEmail(email);
+        }
 
-        user.setEmail(email);
-        user.setInvite_code(invite_code);
-        user.setPassword(entryPassword);
+        if(!userDTO.getInvite_code().isEmpty()) {
+            String invite_code = userDTO.getInvite_code();
+            user.setInvite_code(invite_code);
+        }
+
         return user;
     }
 

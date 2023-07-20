@@ -1,15 +1,19 @@
 package com.animal.product.common;
 
 import com.animal.product.model.dto.MailSenderDTO;
+import com.animal.product.model.vo.UserVO;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
-
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import jakarta.mail.internet.MimeMessage;
+import java.util.Calendar;
+import java.util.HashMap;
 
 /**
  * @author 咏鹅
@@ -42,6 +46,7 @@ public class CommonToolUtils {
     }
 
 
+    //发送邮箱
     public void sendMail(String mailDes,String mailText) throws MessagingException {
         mailSenderDTO.setToEmail(mailDes);
         mailSenderDTO.setText(mailText);
@@ -54,5 +59,6 @@ public class CommonToolUtils {
         messageHelper.setText(mailSenderDTO.getText());
         javaMailSender.send(mimeMessage);
     }
+
 
 }

@@ -2,7 +2,9 @@ package com.animal.product.service;
 
 import com.animal.product.model.domain.ZooUsers;
 import com.animal.product.model.dto.UserDTO;
+import com.animal.product.model.request.UserLoginRequest;
 import com.animal.product.model.request.UserRegisterRequest;
+import com.animal.product.model.vo.UserVO;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -14,9 +16,9 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface ZooUsersService extends IService<ZooUsers> {
     Integer userRegister(UserRegisterRequest userRegisterRequest, String registerIdentity, HttpServletRequest request);
 
-    UserDTO userLogin(String userAccount, String password, HttpServletRequest request);
+    UserVO userLogin(UserLoginRequest userLoginRequest, String loginIdentity, HttpServletRequest request);
 
-    UserDTO getLoginUser(HttpServletRequest request);
+    UserVO getLoginUser(HttpServletRequest request);
 
     String generateCodeToEmail(String email);
 

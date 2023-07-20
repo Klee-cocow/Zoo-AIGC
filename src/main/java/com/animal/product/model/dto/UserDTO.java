@@ -19,36 +19,20 @@ public class UserDTO implements Serializable {
      * 账户邮箱
      */
     private String email;
-
+    /**
+     * 密码
+     */
+    private String password;
 
     /**
-     * 姓名
+     * 手机验证码
      */
-    private String name;
+    private String phone_code;
 
-    /**
-     * 头像
-     */
-    private String avatar;
-
-    /**
-     * 邀请码
-     */
-    private String remember_token;
-
-    /**
-     * 手机
-     */
     private String phone;
 
     /**
-     * 个人介绍
+     * 邮箱确认码
      */
-    private String description;
-
-
-    /**
-     * 剩余额度
-     */
-    private Integer money;
+    private String invite_code;
 }
