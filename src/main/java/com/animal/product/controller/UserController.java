@@ -55,12 +55,6 @@ public class UserController {
 
         String userEmail = userLoginRequest.getEmail();
         String password = userLoginRequest.getPassword();
-        if(StringUtils.isAnyBlank(userEmail,password)){
-            throw new BusinessException(ErrorCode.PARAMETER_ERROR,"用户名或密码不能为空");
-        }
-        if (password.length() < 6) {
-            throw new BusinessException(ErrorCode.PARAMETER_ERROR, "密码长度必须大于等于6位");
-        }
 
         UserDTO user = userService.userLogin(userEmail, password,request);
 
@@ -68,8 +62,8 @@ public class UserController {
         return ResultUtils.success(user);
     }
 
-    @GetMapping("/sendcode")
-    public void sendCode(@PathVariable String email){
+    @PostMapping ("/sendcode")
+    public void sendCode(@RequestParam String email){
         userService.generateCodeToEmail(email);
     }
 

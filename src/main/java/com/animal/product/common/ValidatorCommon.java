@@ -22,14 +22,14 @@ public class ValidatorCommon {
 
 
         //手机号判断
-        if(type.equals(IdentityEnum.phone)){
+        if(type.equals(IdentityEnum.phone.toString())){
             if (!Pattern.compile("^[1-9]{6,16}$").matcher(user.getPhone()).matches()) {
                 throw new BusinessException(ErrorCode.PARAMETER_ERROR, "userRegistryRequest.User Phone Parms error");
             }
 
         }
         //匹配邮箱
-        if(type.equals(IdentityEnum.email)){
+        if(type.equals(IdentityEnum.email.toString())){
             String email = user.getEmail();
             String password = user.getPassword();
 
