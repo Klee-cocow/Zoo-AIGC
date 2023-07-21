@@ -11,7 +11,7 @@
 ------
 
 文件结构:
-|-- src
+|-- undefined
     |-- main
     |   |-- java
     |   |   |-- com
@@ -80,4 +80,3 @@
                 |-- animal
                     |-- product
                         |-- ZooApplicationTests.java
-
