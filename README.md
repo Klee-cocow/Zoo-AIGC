@@ -11,7 +11,7 @@
 ------
 
 文件结构:
-|-- undefined
+|-- src
     |-- main
     |   |-- java
     |   |   |-- com
