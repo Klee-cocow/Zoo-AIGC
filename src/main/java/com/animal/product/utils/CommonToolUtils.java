@@ -1,4 +1,4 @@
-package com.animal.product.common;
+package com.animal.product.utils;
 
 import com.animal.product.model.dto.MailSenderDTO;
 import com.animal.product.model.vo.UserVO;

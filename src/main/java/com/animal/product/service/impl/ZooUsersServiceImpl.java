@@ -2,7 +2,7 @@ package com.animal.product.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.animal.product.common.CommonToolUtils;
+import com.animal.product.utils.CommonToolUtils;
 import com.animal.product.common.ErrorCode;
 import com.animal.product.constant.IdentityEnum;
 import com.animal.product.constant.UserConstant;
