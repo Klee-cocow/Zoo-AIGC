@@ -32,4 +32,9 @@ public class UserRegisterRequest implements Serializable {
      * 邮箱确认码
      */
     private String invite_code;
+
+    /**
+     * 注册类型
+     */
+    private String registerIdentity;
 }

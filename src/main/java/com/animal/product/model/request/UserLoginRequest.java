@@ -20,4 +20,9 @@ public class UserLoginRequest implements Serializable {
      * 密码
      */
     private String password;
+
+    /**
+     * 登录类型
+     */
+    private String loginIdentity;
 }

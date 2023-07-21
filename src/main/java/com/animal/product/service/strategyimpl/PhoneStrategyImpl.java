@@ -4,6 +4,7 @@ import com.animal.product.common.ValidatorCommon;
 import com.animal.product.model.domain.ZooUsers;
 import com.animal.product.model.dto.UserDTO;
 import com.animal.product.strategy.UserStrategyInterface;
+import jodd.util.StringUtil;
 
 /**
  * @author 咏鹅、AllianceTing
@@ -17,12 +18,12 @@ public class PhoneStrategyImpl implements UserStrategyInterface {
         ValidatorCommon.userInfoIsValid(userDTO,type);
         ZooUsers user = new ZooUsers();
 
-        if(!(userDTO.getPhone() !=null)){
+        if(!StringUtil.isEmpty(userDTO.getPhone())){
             String phone = userDTO.getPhone();
             user.setPhone(phone);
         }
 
-        if(!(userDTO.getPhone_code() !=null)){
+        if(!StringUtil.isEmpty(userDTO.getPhone_code())){
             String phone_code = userDTO.getPhone_code();
             user.setPhone_code(phone_code);
         }

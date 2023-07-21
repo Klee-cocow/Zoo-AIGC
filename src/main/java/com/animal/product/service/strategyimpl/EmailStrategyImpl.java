@@ -5,7 +5,9 @@ import com.animal.product.constant.UserConstant;
 import com.animal.product.model.domain.ZooUsers;
 import com.animal.product.model.dto.UserDTO;
 import com.animal.product.strategy.UserStrategyInterface;
+import jodd.util.StringUtil;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 /**
  * @author 咏鹅、AllianceTing
@@ -19,17 +21,17 @@ public class EmailStrategyImpl implements UserStrategyInterface {
         ValidatorCommon.userInfoIsValid(userDTO,type);
         ZooUsers user = new ZooUsers();
 
-        if(!userDTO.getPassword().isEmpty()) {
+        if(!StringUtil.isEmpty(userDTO.getPassword())) {
             String entryPassword = DigestUtils.md5DigestAsHex((UserConstant.SALT + userDTO.getPassword()).getBytes());
             user.setPassword(entryPassword);
         }
 
-        if(!userDTO.getEmail().isEmpty()){
+        if(!StringUtil.isEmpty(userDTO.getEmail())){
             String email = userDTO.getEmail();
             user.setEmail(email);
         }
 
-        if(!userDTO.getInvite_code().isEmpty()) {
+        if(!StringUtil.isEmpty(userDTO.getInvite_code())) {
             String invite_code = userDTO.getInvite_code();
             user.setInvite_code(invite_code);
         }

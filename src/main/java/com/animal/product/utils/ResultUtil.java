@@ -1,4 +1,7 @@
-package com.animal.product.common;
+package com.animal.product.utils;
+
+import com.animal.product.common.BaseResponse;
+import com.animal.product.common.ErrorCode;
 
 /**
  * @author 咏鹅
@@ -6,13 +9,13 @@ package com.animal.product.common;
  * @description 统一返回结果
  * @date 2023/5/30 18:56
  */
-public class ResultUtils {
+public class ResultUtil {
 
     public static <T> BaseResponse<T> success(T data){
         return new BaseResponse<>(0,data,"OK");
     }
 
-    public static BaseResponse error(ErrorCode errorCode,String message,String description){
+    public static BaseResponse error(ErrorCode errorCode, String message, String description){
         return new BaseResponse<>(errorCode.getCode(),message,description);
     }
 

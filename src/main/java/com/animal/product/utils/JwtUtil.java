@@ -1,12 +1,9 @@
-package com.animal.product.common;
+package com.animal.product.utils;
 
-import com.animal.product.exception.BusinessException;
 import com.animal.product.model.vo.UserVO;
 import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -17,7 +14,9 @@ import java.util.HashMap;
  * @description TODO
  * @date 2023/7/21 1:10
  */
-public class JwtUtils {
+public class JwtUtil {
+
+    private static final String TOKEN = "!ZOOPARTY";
 
     //jwt生成令牌
     public static String generateToken(UserVO user){
@@ -30,24 +29,26 @@ public class JwtUtils {
                 .withClaim("Email",user.getEmail())
                 .withClaim("Phone",user.getPhone())
                 .withClaim("Avatar",user.getAvatar())
-                .withClaim("Money",user.getMoney())
+                .withClaim("Money",user.getMoney().toString())
                 .withClaim("Description",user.getDescription())
                 .withExpiresAt(calendar.getTime())
-                .sign(Algorithm.HMAC256("!ZOOPARTY"));
+                .sign(Algorithm.HMAC256(TOKEN));
 
         return token;
     }
 
     //校验jwt
     public static Boolean checkToken(String jwtToken){
-        if(StringUtils.isEmpty(jwtToken)) return false;
-        DecodedJWT decode = JWT.decode(jwtToken);
-
-        long expirationTime = decode.getExpiresAt().getTime();
-        if(System.currentTimeMillis() > expirationTime){
+        try {
+            JWT.require(Algorithm.HMAC256(TOKEN)).build().verify(jwtToken);
+            return true;
+        }catch (Exception e){
             return false;
         }
+    }
 
-        return true;
+    //获取token值
+    public static DecodedJWT getToken(String jwtToken){
+        return JWT.require(Algorithm.HMAC256(TOKEN)).build().verify(jwtToken);
     }
 }

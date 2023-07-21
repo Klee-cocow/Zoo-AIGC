@@ -40,10 +40,6 @@ public class ValidatorCommon {
             if (password.length() < 6) {
                 throw new BusinessException(ErrorCode.PARAMETER_ERROR, "密码长度必须大于等于6位");
             }
-            if(user.getInvite_code().isEmpty()){
-                throw new BusinessException(ErrorCode.PARAMETER_ERROR,"请输入验证码");
-            }
-
         }
     }
 }

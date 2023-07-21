@@ -15,6 +15,8 @@ import com.animal.product.model.request.UserRegisterRequest;
 import com.animal.product.model.vo.UserVO;
 import com.animal.product.service.ZooUsersService;
 import com.animal.product.strategy.UserStrategyContent;
+import com.animal.product.utils.JwtUtil;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
@@ -26,6 +28,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -110,7 +113,7 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
     }
 
     @Override
-    public UserVO userLogin(UserLoginRequest userLoginRequest, String loginIdentity, HttpServletRequest request) {
+    public String userLogin(UserLoginRequest userLoginRequest, String loginIdentity, HttpServletRequest request) {
 
         UserDTO userDTO = new UserDTO();
         BeanUtils.copyProperties(userLoginRequest, userDTO);
@@ -130,33 +133,55 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         String phone_code = user.getPhone_code();
         //如果是手机登录，拿到手机验证码，然后去查询是否对应上了 如果正确对应则放行
 
-        if (user.getPassword() != null)
-            queryWrapper.eq("password", userLoginRequest.getPassword());
+        if (user.getPassword() != null){
+            queryWrapper.eq("password", user.getPassword());
+        }
 
 
         user = zooUsersMapper.selectOne(queryWrapper);
-        UserVO userResult = new UserVO();
         if (user == null) {
             throw new BusinessException(ErrorCode.NO_QUERY, "此用户不存在");
         }
+        UserVO userResult = new UserVO();
+
         //赋值传递脱敏
         BeanUtils.copyProperties(user, userResult);
-        request.getSession().setAttribute(UserConstant.USER_LOGIN_STATE, userResult);
+        //登录成功后设置jwt令牌
+        String token = JwtUtil.generateToken(userResult);
+//        redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE+token,token,7,TimeUnit.DAYS);
 
 
-        return userResult;
+        return token;
     }
 
     @Override
     public UserVO getLoginUser(HttpServletRequest request) {
-        if (request == null) {
-            return null;
+        String token = request.getHeader("Authorization");
+        if (token == null) {
+            throw new BusinessException(ErrorCode.NO_LOGIN);
         }
-        Object userObj = request.getSession().getAttribute(UserConstant.USER_LOGIN_STATE);
-        if (userObj == null) {
-            throw new BusinessException(ErrorCode.NO_LOGIN, "未登录");
+        Boolean flag = JwtUtil.checkToken(token);
+        if(!flag){
+            throw new BusinessException(ErrorCode.NO_AUTH,"token过期");
         }
-        return (UserVO) userObj;
+
+        DecodedJWT userJwt = JwtUtil.getToken(token);
+        UserVO user = new UserVO();
+        String name = userJwt.getClaim("Name").asString();
+        String phone = userJwt.getClaim("Phone").asString();
+        String email = userJwt.getClaim("Email").asString();
+        String avatar = userJwt.getClaim("Avatar").asString();
+        String money = userJwt.getClaim("Money").asString();
+        String description = userJwt.getClaim("Description").asString();
+        user.setEmail(email);
+        user.setName(name);
+        user.setAvatar(avatar);
+        user.setRemember_token(null);  //暂无邀请码
+        user.setPhone(phone);
+        user.setDescription(description);
+        BigDecimal moneyDecimal = new BigDecimal(money);
+        user.setMoney(moneyDecimal);
+        return user;
     }
 
     @Override

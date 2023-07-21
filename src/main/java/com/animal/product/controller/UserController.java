@@ -2,9 +2,8 @@ package com.animal.product.controller;
 
 import com.animal.product.common.BaseResponse;
 import com.animal.product.common.ErrorCode;
-import com.animal.product.common.ResultUtils;
+import com.animal.product.utils.ResultUtil;
 import com.animal.product.exception.BusinessException;
-import com.animal.product.model.dto.UserDTO;
 import com.animal.product.model.request.UserLoginRequest;
 import com.animal.product.model.request.UserRegisterRequest;
 import com.animal.product.model.vo.UserVO;
@@ -28,25 +27,27 @@ public class UserController {
 
 
     @PostMapping("/register")
-    public BaseResponse<Integer> userRegister(@RequestBody UserRegisterRequest userRegisterRequest, String registerIdentity, HttpServletRequest request) {
+    public BaseResponse<Integer> userRegister(@RequestBody UserRegisterRequest userRegisterRequest, HttpServletRequest request) {
         if (userRegisterRequest == null) {
             throw new BusinessException(ErrorCode.PARAMETER_ERROR);
         }
+        String registerIdentity = userRegisterRequest.getRegisterIdentity();
         Integer result = userService.userRegister(userRegisterRequest, registerIdentity, request);
 
-        return ResultUtils.success(result);
+        return ResultUtil.success(result);
     }
 
 
     @PostMapping("/login")
-    public BaseResponse<UserVO> userLogin(@RequestBody UserLoginRequest userLoginRequest, String loginIdentity, HttpServletRequest request) {
+    public BaseResponse<String> userLogin(@RequestBody UserLoginRequest userLoginRequest, HttpServletRequest request) {
         if (userLoginRequest == null) {
             throw new BusinessException(ErrorCode.PARAMETER_ERROR);
         }
-        UserVO user = userService.userLogin(userLoginRequest, loginIdentity, request);
+        String loginIdentity = userLoginRequest.getLoginIdentity();
+        String user = userService.userLogin(userLoginRequest, loginIdentity, request);
 
 
-        return ResultUtils.success(user);
+        return ResultUtil.success(user);
     }
 
     @PostMapping("/sendcode")
@@ -57,12 +58,12 @@ public class UserController {
 
     @GetMapping("/getLoginUser")
     public BaseResponse<UserVO> getLoginUser(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
 
         UserVO loginUser = userService.getLoginUser(request);
         //验证token有效性
-        return ResultUtils.success(loginUser);
+        return ResultUtil.success(loginUser);
     }
+
 
 
 

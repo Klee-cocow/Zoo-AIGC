@@ -1,5 +1,6 @@
-package com.animal.product.common;
+package com.animal.product.utils;
 
+import com.animal.product.common.ErrorCode;
 import com.animal.product.exception.BusinessException;
 
 import java.util.concurrent.CountDownLatch;
@@ -11,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * @description 自定义线程池
  * @date 2023/6/12 22:31
  */
-public class ThreadUtils {
+public class ThreadUtil {
     //线程数量
     private Integer threadCount;
 
@@ -22,13 +23,13 @@ public class ThreadUtils {
 
     private Function function;
 
-    public ThreadUtils(Integer threadCount, Integer size, Integer timeOut, Function function) {
+    public ThreadUtil(Integer threadCount, Integer size, Integer timeOut, Function function) {
         this.threadCount = threadCount;
         this.size = size;
         this.timeOut = timeOut;
         this.function = function;
     }
-    public ThreadUtils(Integer threadCount, Integer size, Function function) {
+    public ThreadUtil(Integer threadCount, Integer size, Function function) {
         this.threadCount = threadCount;
         this.size = size;
         this.function = function;

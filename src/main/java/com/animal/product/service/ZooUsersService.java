@@ -1,7 +1,6 @@
 package com.animal.product.service;
 
 import com.animal.product.model.domain.ZooUsers;
-import com.animal.product.model.dto.UserDTO;
 import com.animal.product.model.request.UserLoginRequest;
 import com.animal.product.model.request.UserRegisterRequest;
 import com.animal.product.model.vo.UserVO;
@@ -16,11 +15,12 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface ZooUsersService extends IService<ZooUsers> {
     Integer userRegister(UserRegisterRequest userRegisterRequest, String registerIdentity, HttpServletRequest request);
 
-    UserVO userLogin(UserLoginRequest userLoginRequest, String loginIdentity, HttpServletRequest request);
+    String userLogin(UserLoginRequest userLoginRequest, String loginIdentity, HttpServletRequest request);
 
     UserVO getLoginUser(HttpServletRequest request);
 
     String generateCodeToEmail(String email);
+
 
 
 }

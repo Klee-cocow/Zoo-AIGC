@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -70,7 +71,7 @@ public class ZooUsers implements Serializable {
     /**
      * 剩余额度
      */
-    private Integer money;
+    private BigDecimal money;
 
     /**
      * 创建时间

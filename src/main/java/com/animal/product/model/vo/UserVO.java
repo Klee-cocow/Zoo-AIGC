@@ -3,6 +3,7 @@ package com.animal.product.model.vo;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author 咏鹅
@@ -48,5 +49,5 @@ public class UserVO implements Serializable {
     /**
      * 剩余额度
      */
-    private Integer money;
+    private BigDecimal money;
 }

@@ -1,7 +1,15 @@
 package com.animal.interceptor;
 
+import com.animal.product.common.ErrorCode;
+import com.animal.product.exception.BusinessException;
+import com.animal.product.utils.JwtUtil;
+import com.auth0.jwt.exceptions.AlgorithmMismatchException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jodd.util.StringUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
@@ -12,19 +20,23 @@ import org.springframework.web.servlet.HandlerInterceptor;
  */
 public class AuthorizeInterceptor implements HandlerInterceptor {
 
-
-    String token;
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return HandlerInterceptor.super.preHandle(request, response, handler);
+        String jwtToken = request.getHeader("Authorization");
+        if(StringUtils.isEmpty(jwtToken)){
+            throw new BusinessException(ErrorCode.NO_LOGIN);
+        }
+        try {
+            JwtUtil.checkToken(jwtToken);
+            return true;
+        } catch (TokenExpiredException e) {
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR, "Token已经过期");
+        } catch (SignatureVerificationException e) {
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR, "签名错误");
+        } catch (AlgorithmMismatchException e) {
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR, "加密算法不匹配");
+        } catch (Exception e) {
+            throw new BusinessException(ErrorCode.PARAMETER_ERROR, "无效token");
+        }
     }
 }
