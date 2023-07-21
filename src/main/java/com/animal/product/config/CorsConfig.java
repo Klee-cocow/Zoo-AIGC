@@ -1,6 +1,6 @@
 package com.animal.product.config;
 
-import com.animal.interceptor.AuthorizeInterceptor;
+import com.animal.product.interceptor.AuthorizeInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

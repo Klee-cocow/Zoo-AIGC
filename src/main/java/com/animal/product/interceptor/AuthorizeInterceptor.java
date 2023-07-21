@@ -1,4 +1,4 @@
-package com.animal.interceptor;
+package com.animal.product.interceptor;
 
 import com.animal.product.common.ErrorCode;
 import com.animal.product.exception.BusinessException;
@@ -9,7 +9,6 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jodd.util.StringUtil;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 /**
