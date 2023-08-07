@@ -9,7 +9,15 @@
 2023-07-21：
 完成登陆注册、获取登录状态判断是否登录、完成发送邮件、添加security鉴权、jwt令牌工具，加入redis
 
+2023-08-04:
+完成建立sse连接，关闭连接，发送消息功能。
+
+2023-08-07：
+完成用户发送的信息记录进行保存。
+
 ------
+
+需要sql 文件的加我QQ：1952789737 ，目前个人开发，加上准备秋招进度较慢，有不全的地方。
 
 文件结构:
 
@@ -22,26 +30,26 @@
     |   |       |-- animal
     |   |           |-- product
     |   |               |-- ZooApplication.java
-    |   |               |-- common
+    |   |               |-- common     //全局命令啥的
     |   |               |   |-- BaseResponse.java
     |   |               |   |-- ErrorCode.java
     |   |               |   |-- ValidatorCommon.java
-    |   |               |-- config
+    |   |               |-- config     //全局配置
     |   |               |   |-- CorsConfig.java
     |   |               |   |-- MybatisPlusConfig.java
     |   |               |   |-- RedisConfig.java
     |   |               |   |-- SecurityConfig.java
-    |   |               |-- constant
+    |   |               |-- constant   
     |   |               |   |-- IdentityEnum.java
     |   |               |   |-- ModelConstant.java
     |   |               |   |-- UserConstant.java
-    |   |               |-- controller
+    |   |               |-- controller  //方法入口
     |   |               |   |-- testController.java
     |   |               |   |-- UserController.java
-    |   |               |-- exception
+    |   |               |-- exception   //处理异常
     |   |               |   |-- BusinessException.java
     |   |               |   |-- GlobalExceptionHandler.java
-    |   |               |-- interceptor
+    |   |               |-- interceptor  
     |   |               |   |-- AuthorizeInterceptor.java
     |   |               |-- mapper
     |   |               |   |-- ZooUsersMapper.java
