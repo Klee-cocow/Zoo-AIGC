@@ -20,9 +20,9 @@
 
         <!--    自定义chatGPT   sdk-->
         <dependency>
-            <groupId>com.zoo</groupId>
-            <artifactId>zoo-party-sdk</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.zoo.friend</groupId>
+            <artifactId>zoo-friend-sdk</artifactId>
+            <version>0.0.1</version>
         </dependency>
 
         <dependency>

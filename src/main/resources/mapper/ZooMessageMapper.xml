@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.animal.product.mapper.ZooMessageMapper">
+
+    <resultMap id="BaseResultMap" type="com.animal.product.model.domain.ZooMessage">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="session_id" column="session_id" jdbcType="VARCHAR"/>
+            <result property="from_Key_id" column="from_Key_id" jdbcType="INTEGER"/>
+            <result property="question" column="question" jdbcType="VARCHAR"/>
+            <result property="message" column="message" jdbcType="VARCHAR"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="icon" column="icon" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,session_id,from_Key_id,
+        question,message,createTime,
+        title,type,icon
+    </sql>
+</mapper>

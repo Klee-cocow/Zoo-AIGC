@@ -12,7 +12,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -58,6 +60,13 @@ public class CommonToolUtils {
         messageHelper.setTo(mailSenderDTO.getToEmail());
         messageHelper.setText(mailSenderDTO.getText());
         javaMailSender.send(mimeMessage);
+    }
+
+    public static Timestamp getCurrentDate(){
+
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+        return timestamp;
     }
 
 
