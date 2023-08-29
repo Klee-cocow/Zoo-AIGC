@@ -1,6 +1,9 @@
 # Zoo-AIGC
 动物园派对！汇集多方模型的AIGC平台。
 立项时间:2023-07-18
+# 项目依赖
+[Klee-cocow/zoo-friend-sdk](https://github.com/Klee-cocow/zoo-friend-sdk)
+
 # 更新日志
 ------
 2023-07-19：
