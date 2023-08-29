@@ -15,80 +15,9 @@
 2023-08-07：
 完成用户发送的信息记录进行保存。
 
+2023-08-29：
+基础功能全部完成，准备加入微信扫码登录、支付功能......
+
 ------
 
-需要sql 文件的加我QQ：1952789737 ，目前个人开发，加上准备秋招进度较慢，有不全的地方。
-
-文件结构:
-
-
-|-- src
-
-    |-- main
-    |   |-- java
-    |   |   |-- com
-    |   |       |-- animal
-    |   |           |-- product
-    |   |               |-- ZooApplication.java
-    |   |               |-- common     //全局命令啥的
-    |   |               |   |-- BaseResponse.java
-    |   |               |   |-- ErrorCode.java
-    |   |               |   |-- ValidatorCommon.java
-    |   |               |-- config     //全局配置
-    |   |               |   |-- CorsConfig.java
-    |   |               |   |-- MybatisPlusConfig.java
-    |   |               |   |-- RedisConfig.java
-    |   |               |   |-- SecurityConfig.java
-    |   |               |-- constant   
-    |   |               |   |-- IdentityEnum.java
-    |   |               |   |-- ModelConstant.java
-    |   |               |   |-- UserConstant.java
-    |   |               |-- controller  //方法入口
-    |   |               |   |-- testController.java
-    |   |               |   |-- UserController.java
-    |   |               |-- exception   //处理异常
-    |   |               |   |-- BusinessException.java
-    |   |               |   |-- GlobalExceptionHandler.java
-    |   |               |-- interceptor  
-    |   |               |   |-- AuthorizeInterceptor.java
-    |   |               |-- mapper
-    |   |               |   |-- ZooUsersMapper.java
-    |   |               |-- model
-    |   |               |   |-- domain
-    |   |               |   |   |-- ZooUsers.java
-    |   |               |   |-- dto
-    |   |               |   |   |-- MailSenderDTO.java
-    |   |               |   |   |-- UserDTO.java
-    |   |               |   |-- request
-    |   |               |   |   |-- UserLoginRequest.java
-    |   |               |   |   |-- UserRegisterRequest.java
-    |   |               |   |-- vo
-    |   |               |       |-- UserVO.java
-    |   |               |-- service
-    |   |               |   |-- ZooUsersService.java
-    |   |               |   |-- impl
-    |   |               |   |   |-- ZooUsersServiceImpl.java
-    |   |               |   |-- strategyimpl
-    |   |               |       |-- EmailStrategyImpl.java
-    |   |               |       |-- PhoneStrategyImpl.java
-    |   |               |-- strategy
-    |   |               |   |-- UserStrategyContent.java
-    |   |               |   |-- UserStrategyInterface.java
-    |   |               |-- utils
-    |   |                   |-- CommonToolUtils.java
-    |   |                   |-- JwtUtil.java
-    |   |                   |-- ResultUtil.java
-    |   |                   |-- ThreadUtil.java
-    |   |-- resources
-    |       |-- application.yml
-    |       |-- logback.xml
-    |       |-- lua
-    |       |   |-- redis.lua
-    |       |-- mapper
-    |           |-- UsersMapper.xml
-    |-- test
-        |-- java
-            |-- com
-                |-- animal
-                    |-- product
-                        |-- ZooApplicationTests.java
+需要sql 文件的加我QQ：1952789737 ，目前个人开发，加上准备秋招进度较慢，有不全的地方，欢迎提交pr。
