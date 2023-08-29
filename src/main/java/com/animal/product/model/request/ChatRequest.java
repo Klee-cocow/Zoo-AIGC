@@ -16,7 +16,11 @@ public class ChatRequest implements Serializable {
 
     private String message;
 
-    private String uuid;
+    //session id
+    private String sid;
 
     private String question;
+
+    //message id
+    private Long mid;
 }

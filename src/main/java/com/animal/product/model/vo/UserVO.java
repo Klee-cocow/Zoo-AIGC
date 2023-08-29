@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 @Data
 public class UserVO implements Serializable {
 
+    private int id;
     /**
      * 账户邮箱
      */

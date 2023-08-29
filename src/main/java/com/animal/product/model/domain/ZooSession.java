@@ -11,52 +11,40 @@ import java.util.Date;
 
 /**
  * 
- * @TableName zoo_message
+ * @TableName zoo_session
  */
-@TableName(value ="zoo_message")
+@TableName(value ="zoo_session")
 @Data
-public class ZooMessage implements Serializable {
+public class ZooSession implements Serializable {
+    /**
+     * 用户id
+     */
+    private Integer user_id;
+
     /**
      * id
      */
-    @TableId
-    private Long id;
-
-    /**
-     * 会话id
-     */
-    private String session_id;
-
-    /**
-     * 来源key的id
-     */
-    private Integer from_Key_id;
-
-    /**
-     * 问题
-     */
-    private String question;
-
-    /**
-     * 回答
-     */
-    private String message;
+    private String id;
 
     /**
      * 创建时间
      */
     private Timestamp createTime;
 
+    /**
+     * 删除时间
+     */
+    private Timestamp deleteTime;
 
     /**
-     * 消息来源
+     * 用户自定义标题
      */
-    private String type;
+    private String title;
 
     /**
-     * AI对话头像
+     * 是否删除 0否
      */
-    private String icon;
+    private Integer is_deleted;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

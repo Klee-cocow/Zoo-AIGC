@@ -21,6 +21,5 @@ public interface ZooUsersService extends IService<ZooUsers> {
 
     String generateCodeToEmail(String email);
 
-
-
+    Boolean logoutUser(HttpServletRequest request);
 }

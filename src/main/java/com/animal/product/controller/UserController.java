@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2023/7/19 18:01
  */
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Resource
@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("/sendcode")
-    public void sendCode(@RequestParam String email) {
+    public void sendCode(@RequestParam("email") String email) {
         userService.generateCodeToEmail(email);
     }
 
@@ -62,6 +62,12 @@ public class UserController {
         UserVO loginUser = userService.getLoginUser(request);
         //验证token有效性
         return ResultUtil.success(loginUser);
+    }
+
+    @PostMapping("/logout")
+    public BaseResponse<Boolean> logoutUser(HttpServletRequest request){
+        Boolean flag = userService.logoutUser(request);
+        return ResultUtil.success(flag);
     }
 
 

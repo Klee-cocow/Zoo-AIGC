@@ -8,6 +8,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -76,12 +77,12 @@ public class ZooUsers implements Serializable {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private Timestamp createTime;
 
     /**
      * 更新时间
      */
-    private Date updateTime;
+    private Timestamp updateTime;
 
     /**
      * 手机验证码

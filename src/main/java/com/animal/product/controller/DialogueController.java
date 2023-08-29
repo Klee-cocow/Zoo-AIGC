@@ -21,7 +21,7 @@ import java.util.Map;
  * @date 2023/8/1 18:25
  */
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api/test")
 public class DialogueController {
 
     @Resource
@@ -41,8 +41,8 @@ public class DialogueController {
 
     @PostMapping("/chat")
     public BaseResponse<String> sseChatDialogue(@RequestBody ChatRequest chatRequest, HttpServletRequest request){
-        String uuid = chatRequest.getUuid();
-        sseService.sseChatDialogue(uuid,chatRequest);
+        String sid = chatRequest.getSid();
+        sseService.sseChatDialogue(sid,chatRequest);
         return ResultUtil.success("OK");
     }
 

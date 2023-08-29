@@ -19,6 +19,7 @@ import com.animal.product.utils.JwtUtil;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -93,11 +95,10 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         //获取用户ip
         String ipAddr = CommonToolUtils.getIpAddr(request);
         Long timeMillis = System.currentTimeMillis();
-        Date date = DateUtil.date();
-
+        Timestamp currentDate = CommonToolUtils.getCurrentDate();
         user.setIp(ipAddr);
-        user.setUpdateTime(date);
-        user.setCreateTime(date);
+        user.setUpdateTime(currentDate);
+        user.setCreateTime(currentDate);
         user.setName(timeMillis.toString());
         user.setDescription(UserConstant.USER_DESCRIPTION);  //默认设置
 
@@ -105,7 +106,7 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
             this.save(user);
         } catch (Exception e) {
 
-            log.error("保存用户失败了 时间：" + date, user);
+            log.error("保存用户失败了 时间：" + currentDate, user);
             throw new BusinessException(ErrorCode.NO_SAVE);
         }
 
@@ -148,7 +149,7 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         BeanUtils.copyProperties(user, userResult);
         //登录成功后设置jwt令牌
         String token = JwtUtil.generateToken(userResult);
-//        redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE+token,token,7,TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE+token,token,7,TimeUnit.DAYS);
 
 
         return token;
@@ -164,6 +165,10 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         if(!flag){
             throw new BusinessException(ErrorCode.NO_AUTH,"token过期");
         }
+        String t = redisTemplate.opsForValue().get(UserConstant.USER_LOGIN_STATE + token);
+        if(!token.equals(t)) {
+            throw new BusinessException(ErrorCode.NO_LOGIN);
+        }
 
         DecodedJWT userJwt = JwtUtil.getToken(token);
         UserVO user = new UserVO();
@@ -173,6 +178,8 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         String avatar = userJwt.getClaim("Avatar").asString();
         String money = userJwt.getClaim("Money").asString();
         String description = userJwt.getClaim("Description").asString();
+        Integer id = userJwt.getClaim("Id").asInt();
+        user.setId(id);
         user.setEmail(email);
         user.setName(name);
         user.setAvatar(avatar);
@@ -220,6 +227,13 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         }
 
         return code;
+    }
+
+    @Override
+    public Boolean logoutUser(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE + token,"",30,TimeUnit.MINUTES);
+        return true;
     }
 
 

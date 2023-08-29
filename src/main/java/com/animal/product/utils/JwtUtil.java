@@ -31,6 +31,7 @@ public class JwtUtil {
                 .withClaim("Avatar",user.getAvatar())
                 .withClaim("Money",user.getMoney().toString())
                 .withClaim("Description",user.getDescription())
+                .withClaim("Id",user.getId())
                 .withExpiresAt(calendar.getTime())
                 .sign(Algorithm.HMAC256(TOKEN));
 
