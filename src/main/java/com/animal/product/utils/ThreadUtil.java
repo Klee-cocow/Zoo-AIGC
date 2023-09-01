@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author 咏鹅
  * @version 1.0
- * @description 自定义线程池
+ * @description 处理多任务线程池
  * @date 2023/6/12 22:31
  */
 public class ThreadUtil {

@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 /**
  * @author AllianceTing、咏鹅
  * @version 1.0
- * @description TODO
+ * @description 校验
  * @date 2023/7/19 23:27
  */
 public class ValidatorCommon {

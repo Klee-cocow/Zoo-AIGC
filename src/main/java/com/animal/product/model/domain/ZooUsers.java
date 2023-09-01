@@ -94,6 +94,11 @@ public class ZooUsers implements Serializable {
      */
     private Integer is_delete;
 
+    /**
+     * 微信Id
+     */
+    private String wx_openId;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

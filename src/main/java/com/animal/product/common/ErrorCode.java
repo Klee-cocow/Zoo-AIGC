@@ -10,13 +10,15 @@ public enum ErrorCode {
 
     SUCCESS(0, "成功", ""),
     NO_LOGIN(1000,"没有登陆",""),
-    NO_SAVE(4100,"保存失败","请联系管理员"),
+    NO_SAVE(4100,"保存失败",""),
     SYSTEM_ERROR(5000,"系统错误","请联系管理员"),
     NO_AUTH(1234,"没有权限",""),
     NO_QUERY(3255,"没有找到",""),
     PARAMETER_ERROR(999,"参数错误",""),
     OVER_FLOW(777,"栈溢出",""),
-    OUT_OF_BOUNDS(12306,"数组越界","");
+    OUT_OF_BOUNDS(12306,"数组越界",""),
+    HTTP_ERROR(1001,"HTTP请求错误",""),
+    ;
 
     private int code;
 

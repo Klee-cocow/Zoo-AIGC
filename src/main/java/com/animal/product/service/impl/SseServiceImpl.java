@@ -11,6 +11,7 @@ import com.animal.product.service.SseService;
 import com.animal.product.service.ZooMessageService;
 import com.animal.product.service.ZooSessionService;
 import com.animal.product.utils.CommonToolUtils;
+import com.animal.product.utils.SseEmitterUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.zoo.friend.OpenAIClient;
 import com.zoo.friend.constant.Role;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @author 咏鹅
@@ -52,47 +54,15 @@ public class SseServiceImpl implements SseService {
     private ZooSessionService sessionService;
 
     @Override
-    public SseEmitter createSseConnect(String uuid) {
-//        Object sse = LocalCache.CACHE.get(uuid);
-//        if(!Objects.isNull(sse)){
-//            return (SseEmitter) sse;
-//        }
-        //默认30秒超时,设置为0L则永不超时
-        SseEmitter sseEmitter = new SseEmitter(0l);
-        //完成后回调
-        sseEmitter.onCompletion(() -> {
-            log.info("[{}]结束连接...................", uuid);
-            LocalCache.CACHE.remove(uuid);
-        });
-        //超时回调
-        sseEmitter.onTimeout(() -> {
-            log.info("[{}]连接超时...................", uuid);
-        });
-        //异常回调
-        sseEmitter.onError(
-                throwable -> {
-                    try {
-                        log.info("[{}]连接异常,{}", uuid, throwable.toString());
-                        sseEmitter.send(SseEmitter.event()
-                                .id(uuid)
-                                .name("发生异常！")
-                                .data(ChatGPTMessage.Party().setContent("发生异常请重试！").partyRun())
-                                .reconnectTime(3000));
-                        LocalCache.CACHE.put(uuid, sseEmitter);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-        );
-        try {
-            sseEmitter.send(SseEmitter.event().reconnectTime(5000));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        LocalCache.CACHE.put(uuid, sseEmitter);
+    public SseEmitter createSseConnect(String uuid) throws IOException {
+
+        SseEmitter sseEmitter = new SseEmitterUtils().createSseEmitter(uuid);
+        LocalCache.CACHE.put(uuid,sseEmitter);
         log.info("[{}]创建sse连接成功！", uuid);
         return sseEmitter;
     }
+
+
 
     @Override
     public void sseChatDialogue(String id, ChatRequest chatRequest) {
@@ -140,7 +110,7 @@ public class SseServiceImpl implements SseService {
             userSession.setTitle(msg.substring(0,6));
 
         Timestamp currentDate = CommonToolUtils.getCurrentDate();
-        userMsg.setFrom_Key_id(1);
+        userMsg.setFrom_Key_id(chatRequest.getUid());
         userMsg.setCreateTime(currentDate);
         userMsg.setQuestion(msg);
         userMsg.setType(Role.USER.toString());
@@ -150,13 +120,14 @@ public class SseServiceImpl implements SseService {
         queryWrapper.eq("id",id);
         try {
             List<ZooSession> list = sessionService.list(queryWrapper);
+            //如果session 为空 则先保存进session
             if(list.isEmpty()){
                 userSession.setCreateTime(currentDate);
-                userSession.setUser_id(1);
+                userSession.setUser_id(chatRequest.getUid());
                 userSession.setId(id);
-                sessionService.saveSession(userSession);
+                sessionService.save(userSession);
             }
-            messageService.save(userMsg);
+            messageService.saveOrUpdate(userMsg);
         } catch (Exception e){
             throw new BusinessException(ErrorCode.NO_SAVE);
         }

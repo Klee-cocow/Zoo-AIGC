@@ -10,6 +10,8 @@ public interface UserConstant {
     //用户登录标识
     String USER_LOGIN_STATE = "userLoginState";
 
+    String USER_LOGIN_SUB_STATE = "ACwiLiMBV";
+
     //默认用户介绍
     String USER_DESCRIPTION = "这个人很懒什么也没留下";
 

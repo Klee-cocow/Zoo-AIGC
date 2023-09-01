@@ -11,6 +11,7 @@ import com.animal.product.service.ZooUsersService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 /**
  * @author 咏鹅、AllianceTing
@@ -24,6 +25,7 @@ public class UserController {
 
     @Resource
     private ZooUsersService userService;
+
 
 
     @PostMapping("/register")

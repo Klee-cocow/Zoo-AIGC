@@ -23,4 +23,7 @@ public class ChatRequest implements Serializable {
 
     //message id
     private Long mid;
+
+    //用户id
+    private Integer uid;
 }

@@ -12,6 +12,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -30,7 +31,11 @@ public class DialogueController {
     @GetMapping("/create_sse")
     public SseEmitter createSseConnect(HttpServletRequest request){
         String uuid = getUid(request);
-        return sseService.createSseConnect(uuid);
+        try {
+            return sseService.createSseConnect(uuid);
+        } catch (IOException e) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
     }
 
     @GetMapping("/closeSse")

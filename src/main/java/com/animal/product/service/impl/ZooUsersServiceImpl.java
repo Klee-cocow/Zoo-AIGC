@@ -2,6 +2,7 @@ package com.animal.product.service.impl;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
+import com.animal.product.model.dto.MailSenderDTO;
 import com.animal.product.utils.CommonToolUtils;
 import com.animal.product.common.ErrorCode;
 import com.animal.product.constant.IdentityEnum;
@@ -22,11 +23,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -50,10 +54,13 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
     private final Logger log = LoggerFactory.getLogger("ZooUserService");
 
     @Resource
-    private ZooUsersMapper zooUsersMapper;
+    private MailSenderDTO mailSenderDTO;
 
     @Resource
-    private CommonToolUtils commonToolUtils;
+    private JavaMailSender javaMailSender;
+
+    @Resource
+    private ZooUsersMapper zooUsersMapper;
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -127,14 +134,14 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         if (user.getEmail() != null)
             queryWrapper.eq("email", userLoginRequest.getEmail());
 
-        if(user.getPhone() != null){
+        if (user.getPhone() != null) {
             queryWrapper.eq("phone", userLoginRequest.getEmail());
         }
 
         String phone_code = user.getPhone_code();
         //如果是手机登录，拿到手机验证码，然后去查询是否对应上了 如果正确对应则放行
 
-        if (user.getPassword() != null){
+        if (user.getPassword() != null) {
             queryWrapper.eq("password", user.getPassword());
         }
 
@@ -149,7 +156,7 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         BeanUtils.copyProperties(user, userResult);
         //登录成功后设置jwt令牌
         String token = JwtUtil.generateToken(userResult);
-        redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE+token,token,7,TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE + token + UserConstant.USER_LOGIN_SUB_STATE, token, 7, TimeUnit.DAYS);
 
 
         return token;
@@ -159,16 +166,19 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
     public UserVO getLoginUser(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token == null) {
-            throw new BusinessException(ErrorCode.NO_LOGIN);
+            throw new BusinessException(ErrorCode.NO_LOGIN, "没有登录");
         }
-        Boolean flag = JwtUtil.checkToken(token);
-        if(!flag){
-            throw new BusinessException(ErrorCode.NO_AUTH,"token过期");
+
+        String t = redisTemplate.opsForValue().get(UserConstant.USER_LOGIN_STATE + token + UserConstant.USER_LOGIN_SUB_STATE);
+        if (!token.equals(t)) {
+            throw new BusinessException(ErrorCode.NO_LOGIN, "没有登录");
         }
-        String t = redisTemplate.opsForValue().get(UserConstant.USER_LOGIN_STATE + token);
-        if(!token.equals(t)) {
-            throw new BusinessException(ErrorCode.NO_LOGIN);
+
+        Boolean flag = JwtUtil.checkToken(t);
+        if (!flag) {
+            throw new BusinessException(ErrorCode.NO_AUTH, "token过期");
         }
+
 
         DecodedJWT userJwt = JwtUtil.getToken(token);
         UserVO user = new UserVO();
@@ -221,7 +231,7 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         String text = "你正在我们的网站进行注册操作，如果不是您所操作的请无视掉这条消息，验证码是: " + code + "请在5分钟内输入";
         redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE + email, code, 5, TimeUnit.MINUTES);
         try {
-            commonToolUtils.sendMail(email, text);
+            this.sendMail(email, text);
         } catch (MessagingException e) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "发送邮件失败");
         }
@@ -232,8 +242,22 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
     @Override
     public Boolean logoutUser(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
-        redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE + token,"",30,TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE + token + UserConstant.USER_LOGIN_SUB_STATE, "", 30, TimeUnit.MINUTES);
         return true;
+    }
+
+    //发送邮箱
+    public void sendMail(String mailDes, String mailText) throws MessagingException {
+        mailSenderDTO.setToEmail(mailDes);
+        mailSenderDTO.setText(mailText);
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
+        messageHelper.setFrom(mailSenderDTO.getEmailFrom());
+        messageHelper.setSubject(mailSenderDTO.getSubject());
+        messageHelper.setTo(mailSenderDTO.getToEmail());
+        messageHelper.setText(mailSenderDTO.getText());
+        javaMailSender.send(mimeMessage);
     }
 
 
