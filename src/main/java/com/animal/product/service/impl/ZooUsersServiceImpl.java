@@ -32,9 +32,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -65,6 +68,8 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
+    @Resource
+    private SpringTemplateEngine templateEngin;
 
     @Override
     public Integer userRegister(UserRegisterRequest userRegisterRequest, String registerIdentity, HttpServletRequest request) {
@@ -228,10 +233,11 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
         }
 
         String code = RandomUtil.randomNumbers(4);
-        String text = "你正在我们的网站进行注册操作，如果不是您所操作的请无视掉这条消息，验证码是: " + code + "请在5分钟内输入";
+        Context context = new Context();
+        context.setVariable("EmailCode", Arrays.asList(code.split("")));
         redisTemplate.opsForValue().set(UserConstant.USER_LOGIN_STATE + email, code, 5, TimeUnit.MINUTES);
         try {
-            this.sendMail(email, text);
+            this.sendMail(email,context);
         } catch (MessagingException e) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "发送邮件失败");
         }
@@ -247,16 +253,18 @@ public class ZooUsersServiceImpl extends ServiceImpl<ZooUsersMapper, ZooUsers>
     }
 
     //发送邮箱
-    public void sendMail(String mailDes, String mailText) throws MessagingException {
+    public void sendMail(String mailDes,Context context) throws MessagingException {
         mailSenderDTO.setToEmail(mailDes);
-        mailSenderDTO.setText(mailText);
+        String sendEmailToUser = templateEngin.process("SendEmailToUser", context);
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
+
         messageHelper.setFrom(mailSenderDTO.getEmailFrom());
         messageHelper.setSubject(mailSenderDTO.getSubject());
         messageHelper.setTo(mailSenderDTO.getToEmail());
-        messageHelper.setText(mailSenderDTO.getText());
+        messageHelper.setText(sendEmailToUser,true);
+
         javaMailSender.send(mimeMessage);
     }
 

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Component;
 public class MailSenderDTO{
 
     String toEmail;
-    String text;
 
     @Value("${email.email-from}")
     String emailFrom;
@@ -25,4 +24,5 @@ public class MailSenderDTO{
     @Value("${email.subject}")
     String subject;
 
+    String code;
 }

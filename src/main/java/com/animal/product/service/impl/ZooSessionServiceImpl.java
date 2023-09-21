@@ -36,6 +36,7 @@ public class ZooSessionServiceImpl extends ServiceImpl<ZooSessionMapper, ZooSess
         queryWrapper.eq(ZooSession::getUser_id, uid);
         List<ZooSession> session = this.list(queryWrapper);
 
+
         List<SessionVO> currentSession = new ArrayList<>();
         for(ZooSession item : session){
             SessionVO sessionVO = new SessionVO();

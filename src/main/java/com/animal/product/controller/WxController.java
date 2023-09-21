@@ -1,9 +1,5 @@
 package com.animal.product.controller;
 
-import cn.hutool.Hutool;
-import cn.hutool.core.convert.impl.CharacterConverter;
-import cn.hutool.http.ContentType;
-import cn.hutool.http.Header;
 import com.animal.product.common.BaseResponse;
 import com.animal.product.common.ErrorCode;
 import com.animal.product.common.LocalCache;
@@ -11,7 +7,6 @@ import com.animal.product.exception.BusinessException;
 import com.animal.product.model.vo.WxInfoVO;
 import com.animal.product.service.WxUserService;
 import com.animal.product.utils.CommonToolUtils;
-import com.animal.product.utils.HttpClientUtils;
 import com.animal.product.utils.ResultUtil;
 import com.zoo.friend.OpenAIClient;
 import com.zoo.friend.constant.Role;
@@ -27,11 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.xml.stream.events.Characters;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
@@ -44,7 +36,7 @@ import java.util.concurrent.CountDownLatch;
 @RestController
 @RequestMapping("/wx")
 @Slf4j
-public class testController {
+public class WxController {
 
 
 
